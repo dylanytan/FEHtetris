@@ -184,7 +184,7 @@ int main()
 {
     
     drawHome();
-
+    //test
     while (true) {
         LCD.Update();
     }
