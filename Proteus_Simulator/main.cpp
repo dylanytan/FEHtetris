@@ -18,33 +18,25 @@ void drawHome() {
     // Displays starting screen
     LCD.WriteLine("TETRIS");
     LCD.SetFontColor(LIGHTGOLDENRODYELLOW);
-    LCD.DrawRectangle(20,50,100,30);
-    LCD.WriteAt("Play",25,60);
-    LCD.DrawRectangle(20,100,100,30);
-    LCD.WriteAt("Stats",25,110);
-    LCD.DrawRectangle(20,150,100,30);
-    LCD.WriteAt("Instruc",25,160);
-    LCD.DrawRectangle(20,200,100,30);
-    LCD.WriteAt("Credits",25,210);   
+    drawButton("PLAY",20,50,100,30);
+    drawButton("Stats",20,100,100,30);
+    drawButton("Instruc", 25, 150, 100, 30);
+    drawButton("Credits",20,200,100,30); 
 
     int userSelection = 0;
-    float touchX, touchY;
-    float trashX, trashY;
     while (userSelection == 0) {
         LCD.Update();
-        while(!LCD.Touch(&touchX,&touchY)) {}
-        while(LCD.Touch(&trashX, &trashY)) {}
 
-        if (touchX >= 20 && touchX <= 120 && touchY >= 50 && touchY <= 80) {
+        if (checkTouch(20,120,50,80)) {
             userSelection = 1;
         }
-        else if (touchX >= 20 && touchX <= 120 && touchY >= 100 && touchY <= 130) {
+        else if (checkTouch(20,120,100,130)) {
             userSelection = 2;
         }
-        else if (touchX >= 20 && touchX <= 120 && touchY >= 150 && touchY <= 180) {
+        else if (checkTouch(20,120,150,180)) {
             userSelection = 3;
         }
-        else if (touchX >= 20 && touchX <= 120 && touchY >= 200 && touchY <= 230) {
+        else if (checkTouch(20,120,200,230)) {
             userSelection = 4;
         }
     }
@@ -102,26 +94,18 @@ void showStats() {
     LCD.WriteLine("5.   Ellen: 1000");
 
     // Back Button
-    LCD.DrawRectangle(250,25,60,30);
-    LCD.WriteAt("BACK",255, 30);
+    drawButton("BACK",250,25,60,30);
 
     // Wait until back pressed
     bool found = false;
-    float touchX, touchY, trashX, trashY;
     while (!found) {
         LCD.Update();
-        while(!LCD.Touch(&touchX,&touchY)) {}
-        while(LCD.Touch(&trashX, &trashY)) {}
-
-        if (touchX >= 250 && touchX <= 310 && touchY >= 25 && touchY <= 55) {
+        if (checkTouch(250,310,25,55)) {
             found = true;
         }
     }
 
     drawHome();
-    while (true) {
-        LCD.Update();
-    }
 }
 
 void showInstruc() {
@@ -138,23 +122,19 @@ void showInstruc() {
     LCD.DrawRectangle(250,25,60,30);
     LCD.WriteAt("BACK",255, 30);
 
+    // Back Button
+    drawButton("BACK",250,25,60,30);
+
     // Wait until back pressed
     bool found = false;
-    float touchX, touchY, trashX, trashY;
     while (!found) {
         LCD.Update();
-        while(!LCD.Touch(&touchX,&touchY)) {}
-        while(LCD.Touch(&trashX, &trashY)) {}
-
-        if (touchX >= 250 && touchX <= 310 && touchY >= 25 && touchY <= 55) {
+        if (checkTouch(250,310,25,55)) {
             found = true;
         }
     }
 
     drawHome();
-    while (true) {
-        LCD.Update();
-    }
 }
 
 void showCredits() {
@@ -162,26 +142,18 @@ void showCredits() {
     LCD.WriteLine("Made by Rishi and Dylan");
 
     // Back Button
-    LCD.DrawRectangle(250,25,60,30);
-    LCD.WriteAt("BACK",255, 30);
+    drawButton("BACK",250,25,60,30);
 
     // Wait until back pressed
     bool found = false;
-    float touchX, touchY, trashX, trashY;
     while (!found) {
         LCD.Update();
-        while(!LCD.Touch(&touchX,&touchY)) {}
-        while(LCD.Touch(&trashX, &trashY)) {}
-
-        if (touchX >= 250 && touchX <= 310 && touchY >= 25 && touchY <= 55) {
+        if (checkTouch(250,310,25,55)) {
             found = true;
         }
     }
 
     drawHome();
-    while (true) {
-        LCD.Update();
-    }
 }
 
 int main()
@@ -195,6 +167,7 @@ int main()
     return 0;
 }
 
+// Function that returns if a certain area is currently being touched
 bool checkTouch(int x1, int x2, int y1, int y2) {
     float touchX, touchY;
     if (LCD.Touch(&touchX, &touchY)) {
@@ -206,6 +179,7 @@ bool checkTouch(int x1, int x2, int y1, int y2) {
     
 }
 
+// Function to draw button with certain size at given location
 void drawButton(char text[], int x, int y, int w, int h) {
     LCD.DrawRectangle(x, y ,w, h);
     LCD.WriteAt(text, x + 5, y + 5);
