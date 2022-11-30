@@ -160,6 +160,21 @@ void showCredits() {
 
 int main()
 {
+    // test drawboard
+    int board[10][20];
+    for (int i = 0; i < 10; i++) {
+        for (int j = 0; j < 20; j++) {
+            board[i][j] = 0;
+        }
+    }
+    board[0][1] = 2;
+    board [1][1] = 6;
+
+    drawBoard(board);
+
+    while (true) {
+        LCD.Update();
+    }
     
     drawHome();
 
