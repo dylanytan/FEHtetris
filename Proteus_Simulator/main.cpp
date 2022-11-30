@@ -6,6 +6,8 @@ void showStats();
 void showInstruc();
 void showCredits();
 
+void drawBoard(int[10][20]);
+
 bool checkTouch(int, int, int, int);
 void drawButton(char[], int, int, int, int);
 
@@ -183,4 +185,47 @@ bool checkTouch(int x1, int x2, int y1, int y2) {
 void drawButton(char text[], int x, int y, int w, int h) {
     LCD.DrawRectangle(x, y ,w, h);
     LCD.WriteAt(text, x + 5, y + 5);
+}
+
+// Draw a board of different colored blocks 
+void drawBoard(int board[10][20]) {
+    // Constant values about board
+    int leftBuffer = 50;
+    int topBuff = 30;
+    int width = 10;
+
+    // loop through all the values of the 
+    for (int i = 0; i < 10; i++ ){
+        for (int j = 0; i < 20; j++) {
+            int color = board[i][j];
+            if (color != 0) {
+                switch(color) {
+                    case 1:
+                        LCD.SetFontColor(DARKTURQUOISE);
+                        break;
+                    case 2:
+                        LCD.SetFontColor(ROYALBLUE);
+                        break;
+                    case 3:
+                        LCD.SetFontColor(ORANGE);
+                        break;
+                    case 4:
+                        LCD.SetFontColor(GOLD);
+                        break;
+                    case 5:
+                        LCD.SetFontColor(LIME);
+                        break;
+                    case 6:
+                        LCD.SetFontColor(MEDIUMPURPLE);
+                        break;
+                    case 7:
+                        LCD.SetFontColor(INDIANRED);
+                        break;
+                }
+                LCD.DrawRectangle(leftBuffer + (i * width), topBuff + ((20-j) * width), width, width);
+            }
+            
+
+        }
+    }
 }
