@@ -160,21 +160,6 @@ void showCredits() {
 
 int main()
 {
-    // test drawboard
-    int board[10][20];
-    for (int i = 0; i < 10; i++) {
-        for (int j = 0; j < 20; j++) {
-            board[i][j] = 0;
-        }
-    }
-    board[0][1] = 2;
-    board [1][1] = 6;
-
-    drawBoard(board);
-
-    while (true) {
-        LCD.Update();
-    }
     
     drawHome();
 
@@ -206,7 +191,7 @@ void drawButton(char text[], int x, int y, int w, int h) {
 void drawBoard(int board[10][20]) {
     // Constant values about board
     int leftBuffer = 50;
-    int topBuff = 30;
+    int topBuff = 20;
     int width = 10;
 
     // loop through all the values of the 
