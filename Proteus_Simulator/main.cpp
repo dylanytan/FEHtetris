@@ -6,6 +6,12 @@ void showStats();
 void showInstruc();
 void showCredits();
 
+bool checkTouch(int, int, int, int);
+void drawButton(char[], int, int, int, int);
+
+/*
+DRAW HOME
+*/
 void drawHome() {
     LCD.Clear();
 
@@ -19,8 +25,7 @@ void drawHome() {
     LCD.DrawRectangle(20,150,100,30);
     LCD.WriteAt("Instruc",25,160);
     LCD.DrawRectangle(20,200,100,30);
-    LCD.WriteAt("Credits",25,210);
-    
+    LCD.WriteAt("Credits",25,210);   
 
     int userSelection = 0;
     float touchX, touchY;
@@ -60,24 +65,23 @@ void drawHome() {
     }
 }
 
+
+/*
+PLAY GAME
+*/
 void showPlayGame() {
     LCD.Clear();
     LCD.WriteLine("Play Game Here!!!");
 
     // Back Button
-    LCD.DrawRectangle(250,25,60,30);
-    LCD.WriteAt("BACK",255, 30);
+    drawButton("BACK", 250, 25, 60, 30);
 
-    // Wait until back pressed
-    bool found = false;
-    float touchX, touchY, trashX, trashY;
-    while (!found) {
-        LCD.Update();
-        while(!LCD.Touch(&touchX,&touchY)) {}
-        while(LCD.Touch(&trashX, &trashY)) {}
+    // Loop for the game
+    bool gameCont = true;
 
-        if (touchX >= 250 && touchX <= 310 && touchY >= 25 && touchY <= 55) {
-            found = true;
+    while (gameCont) {
+        if (checkTouch(250, 310, 25, 55)) {
+            gameCont = false;
         }
     }
 
@@ -189,4 +193,20 @@ int main()
         LCD.Update();
     }
     return 0;
+}
+
+bool checkTouch(int x1, int x2, int y1, int y2) {
+    float touchX, touchY;
+    if (LCD.Touch(&touchX, &touchY)) {
+        if (touchX >= x1 && touchX <= x2 && touchY >= y1 && touchY <= y2) {
+            return true;
+        }
+    }
+    return false;
+    
+}
+
+void drawButton(char text[], int x, int y, int w, int h) {
+    LCD.DrawRectangle(x, y ,w, h);
+    LCD.WriteAt(text, x + 5, y + 5);
 }
