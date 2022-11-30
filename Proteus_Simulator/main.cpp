@@ -211,7 +211,7 @@ void drawBoard(int board[10][20]) {
 
     // loop through all the values of the 
     for (int i = 0; i < 10; i++ ){
-        for (int j = 0; i < 20; j++) {
+        for (int j = 0; j < 20; j++) {
             int color = board[i][j];
             if (color != 0) {
                 switch(color) {
