@@ -377,6 +377,7 @@ bool applyGravity(int pieceLocation[8], int setBoard[10][20], int tick, int leve
             }
         }
 
+        printf("b");
         // If piece isn't touching anything below, make piece move down
         for (int i = i; i < 8; i += 2) {
             pieceLocation[i] = pieceLocation[i] + 1;
