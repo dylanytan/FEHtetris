@@ -236,40 +236,51 @@ void drawBoard(int board[10][20]) {
 }
 
 void generatePiece(int type, int n[8]) {
-    int n[8];
+    // Switch depending on the type of tetromino being created
+    // modity array n co contain the values of the coordinates of the piece
     switch (type) {
         case 1:
-            n[0] = 3;
-            n[1] = 0;
-            n[2] = 4;
-            n[3] = 0;
-            n[4] = 5;
-            n[5] = 0;
-            n[6] = 6;
-            n[7] = 0;
+            n[0] = 3; n[1] = 0;
+            n[2] = 4; n[3] = 0;
+            n[4] = 5; n[5] = 0;
+            n[6] = 6; n[7] = 0;
             break;
         case 2:
-            n[0] = 3;
-            n[1] = 0;
-            n[2] = 3;
-            n[3] = 1;
-            n[4] = 4;
-            n[5] = 1;
-            n[6] = 6;
-            n[7] = 1;
+            n[0] = 3; n[1] = 0;
+            n[2] = 3; n[3] = 1;
+            n[4] = 4; n[5] = 1;
+            n[6] = 6; n[7] = 1;
             break;
         case 3:
-            n[0] = 5;
-            n[1] = 0;
-            n[2] = 3;
-            n[3] = 1;
-            n[4] = 4;
-            n[5] = 1;
-            n[6] = 5;
-            n[7] = 1;
+            n[0] = 5; n[1] = 0;
+            n[2] = 3; n[3] = 1;
+            n[4] = 4; n[5] = 1;
+            n[6] = 5; n[7] = 1;
             break;
         case 4:
-
+            n[0] = 4; n[1] = 0;
+            n[2] = 5; n[3] = 0;
+            n[4] = 4; n[5] = 1;
+            n[6] = 5; n[7] = 0;
+            break;
+        case 5:
+            n[0] = 4; n[1] = 0;
+            n[2] = 5; n[3] = 0;
+            n[4] = 3; n[5] = 1;
+            n[6] = 4; n[7] = 1;
+            break;
+        case 6:
+            n[0] = 4; n[1] = 0;
+            n[2] = 3; n[3] = 1;
+            n[4] = 4; n[5] = 1;
+            n[6] = 5; n[7] = 1;
+            break;
+        case 7:
+            n[0] = 3; n[1] = 0;
+            n[2] = 4; n[3] = 0;
+            n[4] = 4; n[5] = 1;
+            n[6] = 5; n[7] = 1;
+            break;
     }
 
 }
