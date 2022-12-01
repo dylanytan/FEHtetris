@@ -371,7 +371,7 @@ bool applyGravity(int pieceLocation[8], int setBoard[10][20], int tick, int leve
         }
         // Check if piece is touching another piece below
         for (int i = 0; i < 8; i += 2) {
-            if (setBoard[i][i+1] != 0) {
+            if (setBoard[pieceLocation[i]][pieceLocation[i+1]+1] != 0) {
                 return true;
             }
         }
