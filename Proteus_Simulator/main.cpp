@@ -265,7 +265,7 @@ void drawBoard(int board[10][20]) {
                         LCD.SetFontColor(INDIANRED);
                         break;
                 }
-                LCD.DrawRectangle(leftBuffer + (i * width), topBuff + ((20-j) * width), width, width);
+                LCD.DrawRectangle(leftBuffer + (i * width), topBuff + (j * width), width, width);
             }
             
 
