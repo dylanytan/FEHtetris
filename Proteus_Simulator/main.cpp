@@ -117,6 +117,7 @@ void showPlayGame() {
             activePieceType = (Random.RandInt() / 4681) + 1;
             generatePiece(activePieceType, activePieceLocation);
         }
+        printf(activePieceLocation[1]);
 
         // Combine activepiece with board to make the display board
         for (int i = 0; i < 10; i ++) {
@@ -379,7 +380,7 @@ bool applyGravity(int pieceLocation[8], int setBoard[10][20], int tick, int leve
 
         printf("b");
         // If piece isn't touching anything below, make piece move down
-        for (int i = i; i < 8; i += 2) {
+        for (int i = 1; i < 8; i += 2) {
             pieceLocation[i]++;
         }
     }
