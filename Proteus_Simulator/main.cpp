@@ -136,6 +136,8 @@ void showPlayGame() {
         if (checkTouch(250, 310, 25, 55)) {
             gameCont = false;
         }
+
+        LCD.Update();
     }
 
     drawHome();
