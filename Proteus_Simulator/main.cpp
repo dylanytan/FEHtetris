@@ -1,4 +1,5 @@
 #include "FEHLCD.h"
+#include "FEHRandom.h"
 
 void drawHome();
 void showPlayGame();
@@ -7,7 +8,7 @@ void showInstruc();
 void showCredits();
 
 void drawBoard(int[10][20]);
-int* generatePiece(int);
+void generatePiece(int, int[8]);
 
 bool checkTouch(int, int, int, int);
 void drawButton(char[], int, int, int, int);
@@ -68,13 +69,50 @@ void showPlayGame() {
     LCD.Clear();
     LCD.WriteLine("Play Game Here!!!");
 
-    // Back Button
-    drawButton("BACK", 250, 25, 60, 30);
+    // Board of set pieces
+    int setBoard[10][20];
+
+    // The array represting to position of the activePiece
+    int activePieceLocation[8];
+
+    // Int representing the type of the active piece
+    int activePieceType;
+
+    // Board representing what gets displayed to the screen
+    int displayBoard[10][20];
+
+    // Create the empty board that the game is played on
+    for (int i = 0; i < 10; i ++) {
+        for (int j = 0; j < 20; j++) {
+            setBoard[i][j] = 0;
+            displayBoard[i][j] = 0;
+        }
+    }
+
+    // Create inital piece
+    activePieceType = Random.RandInt() / 4681;
+    generatePiece(activePieceType, activePieceLocation);
 
     // Loop for the game
     bool gameCont = true;
 
     while (gameCont) {
+        // Combine activepiece with board to make the display board
+        for (int i = 0; i < 10; i ++) {
+            for (int j = 0; j < 20; j++) {
+                displayBoard[i][j] = setBoard[i][j];
+            }
+        }
+        for (int i = 0; i < 8; i += 2) {
+            displayBoard[activePieceLocation[i]][activePieceLocation[i+1]] = activePieceType;
+        }
+
+        // redraw the board with a back button
+        LCD.Clear();
+        drawButton("BACK", 250, 25, 60, 30);
+        drawBoard(displayBoard);
+
+        // Check back button touch
         if (checkTouch(250, 310, 25, 55)) {
             gameCont = false;
         }
