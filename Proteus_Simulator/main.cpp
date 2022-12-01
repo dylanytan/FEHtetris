@@ -117,7 +117,6 @@ void showPlayGame() {
             activePieceType = (Random.RandInt() / 4681) + 1;
             generatePiece(activePieceType, activePieceLocation);
         }
-        printf(activePieceLocation[1]);
 
         // Combine activepiece with board to make the display board
         for (int i = 0; i < 10; i ++) {
