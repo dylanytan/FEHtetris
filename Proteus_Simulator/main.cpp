@@ -90,7 +90,7 @@ void showPlayGame() {
     }
 
     // Create inital piece
-    activePieceType = Random.RandInt() / 4681;
+    activePieceType = (Random.RandInt() / 4681) + 1;
     generatePiece(activePieceType, activePieceLocation);
 
     // Loop for the game
@@ -290,7 +290,7 @@ void generatePiece(int type, int n[8]) {
             n[0] = 3; n[1] = 0;
             n[2] = 3; n[3] = 1;
             n[4] = 4; n[5] = 1;
-            n[6] = 6; n[7] = 1;
+            n[6] = 5; n[7] = 1;
             break;
 
         // L piece
