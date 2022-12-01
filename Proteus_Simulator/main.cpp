@@ -7,6 +7,7 @@ void showInstruc();
 void showCredits();
 
 void drawBoard(int[10][20]);
+int* generatePiece(int);
 
 bool checkTouch(int, int, int, int);
 void drawButton(char[], int, int, int, int);
@@ -194,6 +195,10 @@ void drawBoard(int board[10][20]) {
     int topBuff = 20;
     int width = 10;
 
+    // Create outline of board
+    LCD.SetFontColor(GRAY);
+    LCD.DrawRectangle(leftBuffer,topBuff, width * 10, width * 20);
+
     // loop through all the values of the 
     for (int i = 0; i < 10; i++ ){
         for (int j = 0; j < 20; j++) {
@@ -228,4 +233,43 @@ void drawBoard(int board[10][20]) {
 
         }
     }
+}
+
+void generatePiece(int type, int n[8]) {
+    int n[8];
+    switch (type) {
+        case 1:
+            n[0] = 3;
+            n[1] = 0;
+            n[2] = 4;
+            n[3] = 0;
+            n[4] = 5;
+            n[5] = 0;
+            n[6] = 6;
+            n[7] = 0;
+            break;
+        case 2:
+            n[0] = 3;
+            n[1] = 0;
+            n[2] = 3;
+            n[3] = 1;
+            n[4] = 4;
+            n[5] = 1;
+            n[6] = 6;
+            n[7] = 1;
+            break;
+        case 3:
+            n[0] = 5;
+            n[1] = 0;
+            n[2] = 3;
+            n[3] = 1;
+            n[4] = 4;
+            n[5] = 1;
+            n[6] = 5;
+            n[7] = 1;
+            break;
+        case 4:
+
+    }
+
 }
