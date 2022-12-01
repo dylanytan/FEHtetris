@@ -362,11 +362,10 @@ void generatePiece(int type, int n[8]) {
 bool applyGravity(int pieceLocation[8], int setBoard[10][20], int tick, int level) {
 
     // Check if gravity is applied current tick
-    if (tick % ((10-level) * 10) == 0) {
-        printf("a");
+    if (tick % ((10-level) * 5) == 0) {
         // Check if piece is touching bottom of board
         for (int i = 1; i < 8; i += 2) {
-            if (pieceLocation[i] == 20) {
+            if (pieceLocation[i] == 29) {
                 return true;
             }
         }
@@ -377,7 +376,6 @@ bool applyGravity(int pieceLocation[8], int setBoard[10][20], int tick, int leve
             }
         }
 
-        printf("b");
         // If piece isn't touching anything below, make piece move down
         for (int i = 1; i < 8; i += 2) {
             pieceLocation[i]++;
