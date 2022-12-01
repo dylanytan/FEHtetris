@@ -1,5 +1,6 @@
 #include "FEHLCD.h"
 #include "FEHRandom.h"
+#include <stdio.h>
 
 void drawHome();
 void showPlayGame();
@@ -362,6 +363,7 @@ bool applyGravity(int pieceLocation[8], int setBoard[10][20], int tick, int leve
 
     // Check if gravity is applied current tick
     if (tick % ((10-level) * 10) == 0) {
+        printf("a");
         // Check if piece is touching bottom of board
         for (int i = 1; i < 8; i += 2) {
             if (pieceLocation[i] == 20) {
