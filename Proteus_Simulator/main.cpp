@@ -365,7 +365,7 @@ bool applyGravity(int pieceLocation[8], int setBoard[10][20], int tick, int leve
     if (tick % ((10-level) * 5) == 0) {
         // Check if piece is touching bottom of board
         for (int i = 1; i < 8; i += 2) {
-            if (pieceLocation[i] == 29) {
+            if (pieceLocation[i] == 19) {
                 return true;
             }
         }
