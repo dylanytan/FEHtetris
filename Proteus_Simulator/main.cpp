@@ -360,7 +360,7 @@ bool applyGravity(int pieceLocation[8], int setBoard[10][20], int tick, int leve
 
     // Check if gravity is applied current tick
     if (tick % ((10-level) * 10) == 0) {
-        LCD.writeLine("HAPPEND");
+        LCD.WriteLine("HAPPEND");
         // Check if piece is touching bottom of board
         for (int i = 1; i < 8; i += 2) {
             if (pieceLocation[i] == 20) {
