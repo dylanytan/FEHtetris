@@ -9,6 +9,7 @@ void showCredits();
 
 void drawBoard(int[10][20]);
 void generatePiece(int, int[8]);
+bool applyGravity(int[8], int[10][20], int, int);
 
 bool checkTouch(int, int, int, int);
 void drawButton(char[], int, int, int, int);
@@ -81,6 +82,12 @@ void showPlayGame() {
     // Board representing what gets displayed to the screen
     int displayBoard[10][20];
 
+    // Int representing current level
+    int level = 1;
+
+    // Int representing current tick
+    int tick = 0;
+
     // Create the empty board that the game is played on
     for (int i = 0; i < 10; i ++) {
         for (int j = 0; j < 20; j++) {
@@ -97,6 +104,19 @@ void showPlayGame() {
     bool gameCont = true;
 
     while (gameCont) {
+        // Increament tick
+        tick++;
+
+        // Apply gravity to current piece
+        // If true, piece tick ground and piece gets moved onto setBoard and new piece gets created
+        if (applyGravity(activePieceLocation, setBoard, tick, level)) {
+            for (int i = 0; i < 8; i += 2) {
+                setBoard[activePieceLocation[i]][activePieceLocation[i+1]] = activePieceType;
+            }
+            activePieceType = (Random.RandInt() / 4681) + 1;
+            generatePiece(activePieceType, activePieceLocation);
+        }
+
         // Combine activepiece with board to make the display board
         for (int i = 0; i < 10; i ++) {
             for (int j = 0; j < 20; j++) {
@@ -334,4 +354,25 @@ void generatePiece(int type, int n[8]) {
             break;
     }
 
+}
+
+bool applyGravity(int pieceLocation[8], int setBoard[10][20], int tick, int level) {
+
+    // Check if gravity is applied current tick
+    if (tick % ((10-level) * 10) == 0) {
+        // Check if piece is touching bottom of board
+        for (int i = 1; i < 8; i += 2) {
+            if (pieceLocation[i] == 20) {
+                return true;
+            }
+        }
+        // Check if piece is touching another piece below
+        for (int i = 0; i < 8; i += 2) {
+            if (setBoard[i][i+1] != 0) {
+                return true;
+            }
+        }
+    }
+
+    return false;
 }
