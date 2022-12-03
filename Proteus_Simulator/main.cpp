@@ -11,6 +11,7 @@ void showCredits();
 void drawBoard(int[10][20]);
 void generatePiece(int, int[8]);
 bool applyGravity(int[8], int[10][20], int, int);
+void movePiece(int[8], int, int[10][20]);
 
 bool checkTouch(int, int, int, int);
 void drawButton(char[], int, int, int, int);
@@ -133,6 +134,21 @@ void showPlayGame() {
         drawButton("BACK", 250, 25, 60, 30);
         drawBoard(displayBoard);
 
+        // Draw left button
+        drawButton("L", 10, 100, 40, 40);
+        drawButton("R", 250, 100, 40, 40);
+
+                
+        // Check left and right buttons
+        if (checkTouch(10,100,40,40)) {
+            movePiece(activePieceLocation, 1, setBoard);
+        }
+        else if (checkTouch(250, 100, 40, 40)) {
+            movePiece(activePieceLocation, 2, setBoard);
+        }
+        
+
+
         // Check back button touch
         if (checkTouch(250, 310, 25, 55)) {
             gameCont = false;
@@ -212,6 +228,8 @@ void showCredits() {
     bool found = false;
     while (!found) {
         LCD.Update();
+
+        // Check Back button
         if (checkTouch(250,310,25,55)) {
             found = true;
         }
@@ -383,4 +401,44 @@ bool applyGravity(int pieceLocation[8], int setBoard[10][20], int tick, int leve
     }
 
     return false;
+}
+
+void movePiece(int piece[8], int direction, int board[10][20]) {
+    // Variable to determine if there is space to move the piece
+    bool moveable = true;
+    
+    // Loop through to check if the piece is loopable
+    for (int i = 0; i < 8; i += 2) {
+        if (direction == 0) {
+            if (piece[i] == 0) {
+                moveable = false;
+            }
+            else if (board[piece[i]-1][piece[i+1]] != 0) {
+                moveable = false;
+            }
+        }
+        else {
+            if (piece[i] == 10) {
+                moveable = false;
+            }
+            else if (board[piece[i]+1][piece[i+1]] != 0) {
+                moveable = false;
+            }
+        }
+    }
+
+    if (moveable) {
+        if (direction == 1) {
+            piece[0] -= 1;
+            piece[2] -= 1;
+            piece[4] -= 1;
+            piece[6] -= 1;
+        }
+        else {
+            piece[1] += 1;
+            piece[3] += 1;
+            piece[5] += 1;
+            piece[7] += 1;
+        }
+    }
 }
