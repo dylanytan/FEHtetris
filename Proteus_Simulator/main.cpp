@@ -12,6 +12,7 @@ void drawBoard(int[10][20]);
 void generatePiece(int, int[8]);
 bool applyGravity(int[8], int[10][20], int, int);
 void movePiece(int[8], int, int[10][20]);
+void moveDown(int[8], int[10][20]);
 
 bool checkTouch(int, int, int, int);
 void drawButton(char[], int, int, int, int);
@@ -135,16 +136,20 @@ void showPlayGame() {
         drawBoard(displayBoard);
 
         // Draw left button
-        drawButton("L", 10, 100, 40, 40);
+        drawButton("L", 150, 100, 40, 40);
         drawButton("R", 250, 100, 40, 40);
+        drawButton("D", 200, 150, 40, 40);
 
                 
-        // Check left and right buttons
-        if (checkTouch(10,50,100,140)) {
+        // Check left, right, down buttons
+        if (checkTouch(150,190,100,140)) {
             movePiece(activePieceLocation, 1, setBoard);
         }
         else if (checkTouch(250, 290, 100, 140)) {
             movePiece(activePieceLocation, 2, setBoard);
+        }
+        else if (checkTouch(200, 240, 150, 190)) {
+            moveDown(activePieceLocation, setBoard);
         }
         
 
@@ -406,7 +411,6 @@ bool applyGravity(int pieceLocation[8], int setBoard[10][20], int tick, int leve
 void movePiece(int piece[8], int direction, int board[10][20]) {
     // Variable to determine if there is space to move the piece
     bool moveable = true;
-    printf("called");
     
     // Loop through to check if the piece is loopable
     for (int i = 0; i < 8; i += 2) {
@@ -429,7 +433,6 @@ void movePiece(int piece[8], int direction, int board[10][20]) {
     }
 
     if (moveable) {
-        printf("moving");
         if (direction == 1) {
             piece[0] -= 1;
             piece[2] -= 1;
@@ -441,6 +444,23 @@ void movePiece(int piece[8], int direction, int board[10][20]) {
             piece[2] += 1;
             piece[4] += 1;
             piece[6] += 1;
+        }
+    }
+}
+
+void moveDown(int piece[8], int board[10][20]) {
+    bool moveable = true;
+    for (int i = 1; i < 8; i += 2) {
+        if (piece[i] == 19) {
+            moveable = false;
+        }
+        else if (board[piece[i-1]][piece[i]+1] != 0) {
+            moveable = false;
+        }
+    }
+    if (moveable) {
+        for (int i = 1; i < 8; i += 2) {
+            piece[i] += 1;
         }
     }
 }
