@@ -431,16 +431,16 @@ void movePiece(int piece[8], int direction, int board[10][20]) {
     if (moveable) {
         printf("moving");
         if (direction == 1) {
-            piece[0] ==  piece[0] + 1;
+            piece[0] -= 1;
             piece[2] -= 1;
             piece[4] -= 1;
             piece[6] -= 1;
         }
         else {
-            piece[1] += 1;
-            piece[3] += 1;
-            piece[5] += 1;
-            piece[7] += 1;
+            piece[0] += 1;
+            piece[2] += 1;
+            piece[4] += 1;
+            piece[6] += 1;
         }
     }
 }
