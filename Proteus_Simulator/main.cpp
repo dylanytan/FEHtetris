@@ -406,6 +406,7 @@ bool applyGravity(int pieceLocation[8], int setBoard[10][20], int tick, int leve
 void movePiece(int piece[8], int direction, int board[10][20]) {
     // Variable to determine if there is space to move the piece
     bool moveable = true;
+    printf("called");
     
     // Loop through to check if the piece is loopable
     for (int i = 0; i < 8; i += 2) {
@@ -428,6 +429,7 @@ void movePiece(int piece[8], int direction, int board[10][20]) {
     }
 
     if (moveable) {
+        printf("moving");
         if (direction == 1) {
             piece[0] ==  piece[0] + 1;
             piece[2] -= 1;
