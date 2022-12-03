@@ -140,10 +140,10 @@ void showPlayGame() {
 
                 
         // Check left and right buttons
-        if (checkTouch(10,100,40,40)) {
+        if (checkTouch(10,50,100,140)) {
             movePiece(activePieceLocation, 1, setBoard);
         }
-        else if (checkTouch(250, 100, 40, 40)) {
+        else if (checkTouch(250, 290, 100, 140)) {
             movePiece(activePieceLocation, 2, setBoard);
         }
         
