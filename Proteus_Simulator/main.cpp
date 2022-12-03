@@ -429,7 +429,7 @@ void movePiece(int piece[8], int direction, int board[10][20]) {
 
     if (moveable) {
         if (direction == 1) {
-            piece[0] -= 1;
+            piece[0] ==  piece[0] + 1;
             piece[2] -= 1;
             piece[4] -= 1;
             piece[6] -= 1;
