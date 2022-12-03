@@ -136,19 +136,19 @@ void showPlayGame() {
         drawBoard(displayBoard);
 
         // Draw left button
-        drawButton("L", 250, 100, 40, 40);
-        drawButton("R", 350, 100, 40, 40);
-        drawButton("D", 300, 150, 40, 40);
+        drawButton("L", 200, 100, 25, 25);
+        drawButton("R", 250, 100, 25, 25);
+        drawButton("D", 225, 125, 25, 25);
 
                 
         // Check left, right, down buttons
-        if (checkTouch(250,290,100,140)) {
+        if (checkTouch(200,225,100,125)) {
             movePiece(activePieceLocation, 1, setBoard);
         }
-        else if (checkTouch(350, 390, 100, 140)) {
+        else if (checkTouch(250, 275, 100, 125)) {
             movePiece(activePieceLocation, 2, setBoard);
         }
-        else if (checkTouch(200, 340, 150, 190)) {
+        else if (checkTouch(225, 250, 125, 150)) {
             moveDown(activePieceLocation, setBoard);
         }
         
