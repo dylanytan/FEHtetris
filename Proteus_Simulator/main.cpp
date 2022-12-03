@@ -411,7 +411,7 @@ void movePiece(int piece[8], int direction, int board[10][20]) {
     // Loop through to check if the piece is loopable
     for (int i = 0; i < 8; i += 2) {
         if (direction == 0) {
-            if (piece[i] == 0) {
+            if (piece[i] == 1) {
                 moveable = false;
             }
             else if (board[piece[i]-1][piece[i+1]] != 0) {
