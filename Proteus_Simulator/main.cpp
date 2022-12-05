@@ -30,7 +30,7 @@ void drawHome() {
     drawButton("PLAY",20,50,100,30);
     drawButton("Stats",20,100,100,30);
     drawButton("Instruc", 25, 150, 100, 30);
-    drawButton("Credits",20,200,100,30); 
+    drawButton("Credits",20,200,100,30);
 
     int userSelection = 0;
     while (userSelection == 0) {
@@ -139,12 +139,12 @@ void showPlayGame() {
         drawButton("BACK", 250, 25, 60, 30);
         drawBoard(displayBoard);
 
-        // Draw left button
+        // Draw control buttons
         drawButton("L", 200, 100, 25, 25);
         drawButton("R", 250, 100, 25, 25);
         drawButton("D", 225, 125, 25, 25);
+        drawButton("r", 225, 75, 25, 25);
 
-                
         // Check left, right, down buttons
         if (checkTouch(200,225,100,125)) {
             movePiece(activePieceLocation, 1, setBoard);
@@ -155,7 +155,15 @@ void showPlayGame() {
         else if (checkTouch(225, 250, 125, 150)) {
             moveDown(activePieceLocation, setBoard);
         }
-        
+        // Check rotation button
+        else if (checkTouch(225, 250, 75, 100)) {
+            // Is true if piece successfully rotated
+            if (rotatePiece(activePieceLocation, setBoard, activePieceType, rotation)) {
+                // Increament rotation
+                rotation++;
+                rotation %= 4;
+            }
+        }
 
 
         // Check back button touch
@@ -249,7 +257,7 @@ void showCredits() {
 
 int main()
 {
-    
+
     drawHome();
 
     while (true) {
@@ -267,7 +275,7 @@ bool checkTouch(int x1, int x2, int y1, int y2) {
         }
     }
     return false;
-    
+
 }
 
 // Function to draw button with certain size at given location
@@ -276,7 +284,7 @@ void drawButton(char text[], int x, int y, int w, int h) {
     LCD.WriteAt(text, x + 5, y + 5);
 }
 
-// Draw a board of different colored blocks 
+// Draw a board of different colored blocks
 void drawBoard(int board[10][20]) {
     // Constant values about board
     int leftBuffer = 50;
@@ -287,7 +295,7 @@ void drawBoard(int board[10][20]) {
     LCD.SetFontColor(GRAY);
     LCD.DrawRectangle(leftBuffer,topBuff, width * 10, width * 20);
 
-    // loop through all the values of the 
+    // loop through all the values of the
     for (int i = 0; i < 10; i++ ){
         for (int j = 0; j < 20; j++) {
             int color = board[i][j];
@@ -317,7 +325,7 @@ void drawBoard(int board[10][20]) {
                 }
                 LCD.DrawRectangle(leftBuffer + (i * width), topBuff + (j * width), width, width);
             }
-            
+
 
         }
     }
@@ -415,7 +423,7 @@ bool applyGravity(int pieceLocation[8], int setBoard[10][20], int tick, int leve
 void movePiece(int piece[8], int direction, int board[10][20]) {
     // Variable to determine if there is space to move the piece
     bool moveable = true;
-    
+
     // Loop through to check if the piece is loopable
     for (int i = 0; i < 8; i += 2) {
         if (direction == 1) {
@@ -559,7 +567,7 @@ bool rotatePiece(int piece[8], int board[10][20], int type, int rotation) {
                 break;
         }
     }
-    
+
     // Check if result position if valid
     for (int i = 0; i < 8; i += 2) {
         // Check if piece is out of box
@@ -584,4 +592,3 @@ bool rotatePiece(int piece[8], int board[10][20], int type, int rotation) {
     return true;
 
 }
-
