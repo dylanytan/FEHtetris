@@ -451,7 +451,7 @@ void showPlayGame() {
         }
 
         // Check lines cleared
-        setBoard.checkLineClear();
+        boardState.checkLineClear();
 
         // Combine activepiece with board to make the display board
         for (int i = 0; i < 10; i ++) {
