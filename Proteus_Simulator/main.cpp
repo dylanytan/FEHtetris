@@ -560,7 +560,7 @@ void showPlayGame() {
 // Created by Rishi
 void showStats() {
     LCD.Clear();
-    LCD.WriteLine("HIGH SCORES:");
+    LCD.WriteLine("HIGH SCORE:");
     LCD.WriteLine(highScore);
 
     // Back Button
@@ -642,6 +642,7 @@ void drawGameOver(int score) {
     LCD.Clear();
     LCD.SetFontColor(SIENNA);
     LCD.WriteLine("GAME OVER");
+    LCD.WriteLine(" ");
 
     // Write out score and high score
     LCD.WriteLine("Score: ");
