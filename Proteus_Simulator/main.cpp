@@ -334,7 +334,7 @@ class BoardState {
                 if (rowCleared) {
                     linesCleared++;
                     // Loop through all rows to move pieces down
-                    for (int curRow = row; curRow <= 0; curRow--) {
+                    for (int curRow = row; curRow >= 0; curRow--) {
                         // If not top row, move pieces from row above down a level
                         if (curRow != 0) {
                             for (int i = 0; i < 10; i++) {
