@@ -496,7 +496,7 @@ bool rotatePiece(int piece[8], int board[10][20], int type, int rotation) {
 
     // J piece rotation
     int rotateJ[4][8] = {
-        {2, 1, 1, 1, 0, 1, -1, -2},
+        {2, 1, 1, 0, 0, 1, -1, 2},
         {0, 1, 1, 0, 0, -1, -1, -2},
         {-2, 1, -1, 2, 0, 1, 1, 0},
         {0, -3, -1, -2, 0, -1, 1, 0}
@@ -537,9 +537,9 @@ bool rotatePiece(int piece[8], int board[10][20], int type, int rotation) {
     // Z piece rotation
     int rotateZ[4][8] = {
         {1, 0, 0, 1, -1, 0, -2, 1},
-        {-1, 0, 0, -1, -1, 0, 2, -1},
+        {-1, 0, 0, -1, 1, 0, 2, -1},
         {1, 0, 0, 1, -1, 0, -2, 1},
-        {-1, 0, 0, -1, -1, 0, 2, -1}
+        {-1, 0, 0, -1, 1, 0, 2, -1}
     };
 
     // create result array
