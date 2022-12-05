@@ -78,7 +78,7 @@ class BoardState {
         bool applyGravity(int tick, int level) {
 
             // Check if gravity is applied current tick
-            if (tick % ((10-level) * 5) == 0) {
+            if (tick % ((10-level) * 3) == 0) {
                 // Check if piece is touching bottom of board
                 for (int i = 1; i < 8; i += 2) {
                     if (activePiece[i] == 19) {
