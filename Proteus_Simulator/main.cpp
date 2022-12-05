@@ -10,7 +10,7 @@ void showStats();
 void showInstruc();
 void showCredits();
 
-void drawBoard(BoardState);
+void drawBoard(int[10][20]);
 bool checkTouch(int, int, int, int);
 void drawButton(char[], int, int, int, int);
 void generatePieceCoordinates(int, int[8]);
@@ -40,7 +40,6 @@ class BoardState {
             for (int i = 0; i < 10; i ++) {
                 for (int j = 0; j < 20; j++) {
                     setBoard[i][j] = 0;
-                    displayBoard[i][j] = 0;
                 }
             }
 
@@ -56,7 +55,7 @@ class BoardState {
         void generatePiece() {
 
             // Set rotation to 0
-            rotation = 0
+            rotation = 0;
 
             // Use random to generate 1 of 7 pieces
             activePieceType = (Random.RandInt() / 4681) + 1;
@@ -253,7 +252,7 @@ class BoardState {
             // create result array by adding rotation change array to piece array
             for (int i = 0; i < 8; i++) {
                 // Switch depending on piece type
-                switch (type) {
+                switch (activePieceType) {
                     case 1:
                         resultPosition[i] = activePiece[i] + rotateI[rotation][i];
                         break;
@@ -284,15 +283,15 @@ class BoardState {
             for (int i = 0; i < 8; i += 2) {
                 // Check if piece is out of box
                 if (resultPosition[i] < 0 || resultPosition[i] > 9) {
-                    rotationSuccess false;
+                    rotationSuccess = false;
                 }
                 if (resultPosition[i+1] < 0 || resultPosition[i] > 19) {
-                    rotationSuccess false;
+                    rotationSuccess = false;
                 }
 
                 // Check if piece will collide with existing piece
-                if (board[resultPosition[i]][resultPosition[i+1]] != 0) {
-                    rotationSuccess false;
+                if (setBoard[resultPosition[i]][resultPosition[i+1]] != 0) {
+                    rotationSuccess = false;
                 }
             }
 
@@ -300,13 +299,13 @@ class BoardState {
             // Change piece position
             if (rotationSuccess) {
               for (int i = 0; i < 8; i++) {
-                  piece[i] = resultPosition[i];
+                  activePiece[i] = resultPosition[i];
               }
             }
 
         }
 
-}
+};
 
 /*
 DRAW HOME
@@ -391,7 +390,7 @@ void showPlayGame() {
         // Rotation gets reset to 0
         if (boardState.applyGravity(tick, level)) {
             for (int i = 0; i < 8; i += 2) {
-                setBoard[boardState.activePiece[i]][boardState.activePiece[i+1]] = boardState.activePieceType;
+                boardState.setBoard[boardState.activePiece[i]][boardState.activePiece[i+1]] = boardState.activePieceType;
             }
             boardState.generatePiece();
         }
@@ -557,7 +556,7 @@ void drawButton(char text[], int x, int y, int w, int h) {
 }
 
 // Draw a board of different colored blocks
-void drawBoard(BoardState boardState) {
+void drawBoard(int board[10][20]) {
     // Constant values about board
     int leftBuffer = 50;
     int topBuff = 20;
@@ -570,7 +569,7 @@ void drawBoard(BoardState boardState) {
     // loop through all the values of the
     for (int i = 0; i < 10; i++ ){
         for (int j = 0; j < 20; j++) {
-            int color = boardState.setBoard[i][j];
+            int color = board[i][j];
             if (color != 0) {
                 switch(color) {
                     case 1:
