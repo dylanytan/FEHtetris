@@ -333,17 +333,20 @@ class BoardState {
                 // If row is completed
                 if (rowCleared) {
                     linesCleared++;
-                    // If not top row, move pieces from row above down a level
-                    if (row != 0) {
-                        for (int i = 0; i < 10; i++) {
-                            setBoard[i][row] = setBoard[i][row-1];
+                    // Loop through all rows to move pieces down
+                    for (int curRow = row; curRow <= 0; curRow--) {
+                        // If not top row, move pieces from row above down a level
+                        if (curRow != 0) {
+                            for (int i = 0; i < 10; i++) {
+                                setBoard[i][curRow] = setBoard[i][curRow-1];
+                            }
                         }
-                    }
-                    // If it is top row, set row to empty
-                    else {
-                      for (int i = 0; i < 10; i++) {
-                          setBoard[i][row] = 0;
-                      }
+                        // If it is top row, set row to empty
+                        else {
+                            for (int i = 0; i < 10; i++) {
+                                setBoard[i][curRow] = 0;
+                            }
+                        }
                     }
                 }
                 // If line not complete, check line above
