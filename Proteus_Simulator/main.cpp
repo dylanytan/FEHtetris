@@ -346,9 +346,9 @@ void generatePiece(int type, int n[8]) {
         // L piece
         case 3:
             n[0] = 5; n[1] = 0;
-            n[2] = 3; n[3] = 1;
+            n[2] = 5; n[3] = 1;
             n[4] = 4; n[5] = 1;
-            n[6] = 5; n[7] = 1;
+            n[6] = 3; n[7] = 1;
             break;
 
         // O piece
@@ -359,12 +359,12 @@ void generatePiece(int type, int n[8]) {
             n[6] = 5; n[7] = 1;
             break;
 
-        // Z piece
+        // S piece
         case 5:
-            n[0] = 4; n[1] = 0;
-            n[2] = 5; n[3] = 0;
-            n[4] = 3; n[5] = 1;
-            n[6] = 4; n[7] = 1;
+            n[0] = 5; n[1] = 0;
+            n[2] = 4; n[3] = 0;
+            n[4] = 4; n[5] = 1;
+            n[6] = 3; n[7] = 1;
             break;
 
         // T piece
@@ -375,7 +375,7 @@ void generatePiece(int type, int n[8]) {
             n[6] = 5; n[7] = 1;
             break;
 
-        // S piece
+        // Z piece
         case 7:
             n[0] = 3; n[1] = 0;
             n[2] = 4; n[3] = 0;
@@ -471,16 +471,117 @@ void moveDown(int piece[8], int board[10][20]) {
 
 bool rotatePiece(int piece[8], int board[10][20], int type, int rotation) {
 
-    int x1, y1, x2, y2, x3, y3, x4, y4;
+    // Int array to represent where the piece should end up
+    int resultPosition[8];
 
-    switch (type) {
-        case 1:
-            switch (rotation) {
-                case 1:
-                    x1 = piec[0] 
-            }
+    // 2D array of the movements for all rotations
+
+    // I piece rotation
+    int rotateI[4][8] = {
+        {2, 0, 1, 1, 0, 2, -1, 3},
+        {-2, 0, -1, -2, 0, -2, 1, -3},
+        {2, 0, 1, 1, 0, 2, -1, 3},
+        {-2, 0, -1, -2, 0, -2, 1, -3}
+    };
+
+    // J piece rotation
+    int rotateJ[4][8] = {
+        {2, 1, 1, 1, 0, 1, -1, 2},
+        {0, 1, 1, 0, 0, -1, -1, -2},
+        {-2, 1, -1, 2, 0, 1, 1, 0},
+        {0, -3, -1, -2, 0, -1, 1, 0}
+    };
+
+    // L piece rotation
+    int rotateL[4][8] = {
+        {0, 3, -1, 2, 0, 1, 1, 0},
+        {-2, -1, -1, -1, 0, -1, 1, 0},
+        {0, -1, 1, 0, 0, 1, -1, 2},
+        {2, -1, 1, 0, 0, 1, -1, -2}
+    };
+
+    // O piece rotation
+    int rotateO[4][8] = {
+        {0, 0, 0, 0, 0, 0, 0, 0},
+        {0, 0, 0, 0, 0, 0, 0, 0},
+        {0, 0, 0, 0, 0, 0, 0, 0},
+        {0, 0, 0, 0, 0, 0, 0, 0}
+    };
+
+    // S piece rotation
+    int rotateS[4][8] = {
+        {-1, 0, 0, 1, -1, 0, 0, 1},
+        {1, 0, 0, -1, 1, 0, 0, -1},
+        {-1, 0, 0, 1, -1, 0, 0, 1},
+        {1, 0, 0, -1, 1, 0, 0, -1}
+    };
+
+    // T piece rotation
+    int rotateT[4][8] = {
+        {1, 1, 1, -1, 0, 0, -1, 1},
+        {-1, 1, 1, 1, 0, 0, -1, -1},
+        {-1, -1, -1, 1, 0, 0, 1, -1},
+        {1, -1, -1, -1, 0, 0, 1, 1,}
+    };
+
+    // Z piece rotation
+    int rotateZ[4][8] = {
+        {1, 0, 0, 1, -1, 0, -2, 1},
+        {-1, 0, 0, -1, -1, 0, 2, -1},
+        {1, 0, 0, 1, -1, 0, -2, 1},
+        {-1, 0, 0, -1, -1, 0, 2, -1}
+    };
+
+    // create result array
+    for (int i = 0; i < 8; i++) {
+        // Switch depending on piece type
+        switch (type) {
+            case 1:
+                resultPosition[i] = piece[i] + rotateI[rotation][i];
+                break;
+            case 2:
+                resultPosition[i] = piece[i] + rotateJ[rotation][i];
+                break;
+            case 3:
+                resultPosition[i] = piece[i] + rotateL[rotation][i];
+                break;
+            case 4:
+                resultPosition[i] = piece[i] + rotateO[rotation][i];
+                break;
+            case 5:
+                resultPosition[i] = piece[i] + rotateS[rotation][i];
+                break;
+            case 6:
+                resultPosition[i] = piece[i] + rotateT[rotation][i];
+                break;
+            case 7:
+                resultPosition[i] = piece[i] + rotateZ[rotation][i];
+                break;
+        }
+    }
+    
+    // Check if result position if valid
+    for (int i = 0; i < 8; i += 2) {
+        // Check if piece is out of box
+        if (resultPosition[i] < 0 || resultPosition[i] > 9) {
+            return false;
+        }
+        if (resultPosition[i+1] < 0 || resultPosition[i] > 19) {
+            return false;
+        }
+
+        // Check if piece will collide with existing piece
+        if (board[resultPosition[i]][resultPosition[i+1]] != 0) {
+            return false;
+        }
     }
 
+    // Change piece position
+    for (int i = 0; i < 8; i++) {
+        piece[i] = resultPosition[i];
+    }
+
+    return true;
 
 }
 
