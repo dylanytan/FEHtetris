@@ -9,6 +9,7 @@ void showPlayGame();
 void showStats();
 void showInstruc();
 void showCredits();
+void drawGameOver(int);
 
 void drawBoard(int[10][20]);
 bool checkTouch(int, int, int, int);
