@@ -301,6 +301,10 @@ class BoardState {
               for (int i = 0; i < 8; i++) {
                   activePiece[i] = resultPosition[i];
               }
+
+              // Increment rotation
+              rotation++;
+              rotation %= 4;
             }
 
         }
@@ -405,9 +409,12 @@ void showPlayGame() {
             displayBoard[boardState.activePiece[i]][boardState.activePiece[i+1]] = boardState.activePieceType;
         }
 
-        // redraw the board with a back button
+        // redraw the board
         LCD.Clear();
         drawBoard(displayBoard);
+
+        // Draw Back button
+        drawButton("BACK", 250, 25, 60, 30);
 
         // Draw control buttons
         drawButton("L", 200, 100, 25, 25);
@@ -429,9 +436,6 @@ void showPlayGame() {
             boardState.rotatePiece();
         }
 
-
-        // Draw Back button
-        drawButton("BACK", 250, 25, 60, 30);
 
         // Check back button touch
         if (checkTouch(250, 310, 25, 55)) {
