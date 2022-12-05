@@ -504,8 +504,8 @@ void showPlayGame() {
         drawButton("r", 225, 75, 25, 25);
 
         // Write current score and highScore
-        LCD.WriteAt("Current Score: ", 190, 50,);
-        LCD.WriteAt(score, 260, 50,);
+        LCD.WriteAt("Current Score: ", 190, 50);
+        LCD.WriteAt(score, 260, 50);
         LCD.WriteAt("High Score   : ", 190, 65);
         LCD.WriteAt(highScore, 260, 65);
 
