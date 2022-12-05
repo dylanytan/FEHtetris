@@ -354,9 +354,9 @@ class BoardState {
             }
 
             // Return score based off of level and lines cleared
-            int scoreGained = 10 * (linesCleared * ( 1.0 + (0.5 * linesCleared))) * (1.0 + (0.5 * level));
+            //int scoreGained = 10 * (linesCleared * ( 1.0 + (0.5 * linesCleared))) * (1.0 + (0.5 * level));
 
-            return scoreGained;
+            return 1;
 
         }
 
