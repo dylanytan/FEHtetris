@@ -2,21 +2,311 @@
 #include "FEHRandom.h"
 #include <stdio.h>
 
+class BoardState;
+
 void drawHome();
 void showPlayGame();
 void showStats();
 void showInstruc();
 void showCredits();
 
-void drawBoard(int[10][20]);
-void generatePiece(int, int[8]);
-bool applyGravity(int[8], int[10][20], int, int);
-void movePiece(int[8], int, int[10][20]);
-void moveDown(int[8], int[10][20]);
-bool rotatePiece(int[8], int[10][20], int, int);
-
+void drawBoard(BoardState);
 bool checkTouch(int, int, int, int);
 void drawButton(char[], int, int, int, int);
+void generatePieceCoordinates(int, int[8]);
+
+// Class for board state
+// This class represents the board and the current active piece
+class BoardState {
+    public:
+        // The board with all the set pieces
+        int setBoard[10][20];
+
+        // The active piece and its location
+        int activePiece[8];
+
+        // The type of the active piece
+        int activePieceType;
+
+        // The rotation level of the active piece
+        int rotation;
+
+
+        /*
+        Constructor
+        */
+        BoardState() {
+            // Create the setBoard of empty space
+            for (int i = 0; i < 10; i ++) {
+                for (int j = 0; j < 20; j++) {
+                    setBoard[i][j] = 0;
+                    displayBoard[i][j] = 0;
+                }
+            }
+
+            // Default values for type and rotation
+            activePieceType = 0;
+            rotation = 0;
+        }
+
+
+        /*
+        Generates an active piece
+        */
+        void generatePiece() {
+
+            // Set rotation to 0
+            rotation = 0
+
+            // Use random to generate 1 of 7 pieces
+            activePieceType = (Random.RandInt() / 4681) + 1;
+
+            // Use generated piece to create coordinates of piece
+            generatePieceCoordinates(activePieceType, activePiece);
+        }
+
+
+        /*
+        Applies gravity to piece
+        Moves based off of current level and tick
+        takes in int tick and int level
+        Returns whether piece hit bottom
+        */
+        bool applyGravity(int tick, int level) {
+
+            // Check if gravity is applied current tick
+            if (tick % ((10-level) * 5) == 0) {
+                // Check if piece is touching bottom of board
+                for (int i = 1; i < 8; i += 2) {
+                    if (activePiece[i] == 19) {
+                        return true;
+                    }
+                }
+                // Check if piece is touching another piece below
+                for (int i = 0; i < 8; i += 2) {
+                    if (setBoard[activePiece[i]][activePiece[i+1]+1] != 0) {
+                        return true;
+                    }
+                }
+
+                // If piece isn't touching anything below, make piece move down
+                for (int i = 1; i < 8; i += 2) {
+                    activePiece[i]++;
+                }
+            }
+
+            return false;
+        }
+
+
+        /*
+        Move piece left of right depending on user input
+        takes int direction for left for right
+        */
+        void movePiece(int direction) {
+            // Variable to determine if there is space to move the piece
+            bool moveable = true;
+
+            // Loop through to check if the piece is moveable based on if each block in piece is gonna collide
+            for (int i = 0; i < 8; i += 2) {
+
+                // Check left
+                if (direction == 1) {
+                    // Check if collid with border
+                    if (activePiece[i] == 0) {
+                        moveable = false;
+                    }
+
+                    // Check if collid with other piece
+                    else if (setBoard[activePiece[i]-1][activePiece[i+1]] != 0) {
+                        moveable = false;
+                    }
+                }
+
+                // Check right
+                else {
+                    // Check if collid with border
+                    if (activePiece[i] == 10) {
+                        moveable = false;
+                    }
+
+                    // Check if collider with other piece
+                    else if (setBoard[activePiece[i]+1][activePiece[i+1]] != 0) {
+                        moveable = false;
+                    }
+                }
+            }
+
+            // Move piece based of direction by increamenting or decrementing all y values
+            if (moveable) {
+                if (direction == 1) {
+                    activePiece[0] -= 1;
+                    activePiece[2] -= 1;
+                    activePiece[4] -= 1;
+                    activePiece[6] -= 1;
+                }
+                else {
+                    activePiece[0] += 1;
+                    activePiece[2] += 1;
+                    activePiece[4] += 1;
+                    activePiece[6] += 1;
+                }
+            }
+        }
+
+
+        /*
+        Move piece downwards
+        */
+        void moveDown() {
+
+            bool moveable = true;
+
+            // Loop through to check if the piece is moveable based on if each block in piece is gonna collide
+            for (int i = 1; i < 8; i += 2) {
+                // Check if piece collides with bottom
+                if (activePiece[i] == 19) {
+                    moveable = false;
+                }
+
+                // Check if piece collides with other piece
+                else if (setBoard[activePiece[i-1]][activePiece[i]+1] != 0) {
+                    moveable = false;
+                }
+            }
+
+            // Move piece by increamenting all Y values of the piece
+            if (moveable) {
+                for (int i = 1; i < 8; i += 2) {
+                    activePiece[i] += 1;
+                }
+            }
+        }
+
+
+        /*
+        Rotates piece clockwise
+        */
+        void rotatePiece() {
+
+            // Int array to represent where the piece should end up
+            int resultPosition[8];
+
+            // 2D array of the movements for all rotations
+
+            // I piece rotation
+            int rotateI[4][8] = {
+                {2, 0, 1, 1, 0, 2, -1, 3},
+                {-2, 0, -1, -1, 0, -2, 1, -3},
+                {2, 0, 1, 1, 0, 2, -1, 3},
+                {-2, 0, -1, -1, 0, -2, 1, -3}
+            };
+
+            // J piece rotation
+            int rotateJ[4][8] = {
+                {2, 1, 1, 0, 0, 1, -1, 2},
+                {0, 1, 1, 0, 0, -1, -1, -2},
+                {-2, 1, -1, 2, 0, 1, 1, 0},
+                {0, -3, -1, -2, 0, -1, 1, 0}
+            };
+
+            // L piece rotation
+            int rotateL[4][8] = {
+                {0, 3, -1, 2, 0, 1, 1, 0},
+                {-2, -1, -1, -2, 0, -1, 1, 0},
+                {0, -1, 1, 0, 0, 1, -1, 2},
+                {2, -1, 1, 0, 0, -1, -1, -2}
+            };
+
+            // O piece rotation
+            int rotateO[4][8] = {
+                {0, 0, 0, 0, 0, 0, 0, 0},
+                {0, 0, 0, 0, 0, 0, 0, 0},
+                {0, 0, 0, 0, 0, 0, 0, 0},
+                {0, 0, 0, 0, 0, 0, 0, 0}
+            };
+
+            // S piece rotation
+            int rotateS[4][8] = {
+                {-1, 0, 0, 1, 1, 0, 2, 1},
+                {1, 0, 0, -1, -1, 0, -2, -1},
+                {-1, 0, 0, 1, 1, 0, 2, 1},
+                {1, 0, 0, -1, -1, 0, -2, -1}
+            };
+
+            // T piece rotation
+            int rotateT[4][8] = {
+                {1, 1, 1, -1, 0, 0, -1, 1},
+                {-1, 1, 1, 1, 0, 0, -1, -1},
+                {-1, -1, -1, 1, 0, 0, 1, -1},
+                {1, -1, -1, -1, 0, 0, 1, 1,}
+            };
+
+            // Z piece rotation
+            int rotateZ[4][8] = {
+                {1, 0, 0, 1, -1, 0, -2, 1},
+                {-1, 0, 0, -1, 1, 0, 2, -1},
+                {1, 0, 0, 1, -1, 0, -2, 1},
+                {-1, 0, 0, -1, 1, 0, 2, -1}
+            };
+
+            // create result array by adding rotation change array to piece array
+            for (int i = 0; i < 8; i++) {
+                // Switch depending on piece type
+                switch (type) {
+                    case 1:
+                        resultPosition[i] = activePiece[i] + rotateI[rotation][i];
+                        break;
+                    case 2:
+                        resultPosition[i] = activePiece[i] + rotateJ[rotation][i];
+                        break;
+                    case 3:
+                        resultPosition[i] = activePiece[i] + rotateL[rotation][i];
+                        break;
+                    case 4:
+                        resultPosition[i] = activePiece[i] + rotateO[rotation][i];
+                        break;
+                    case 5:
+                        resultPosition[i] = activePiece[i] + rotateS[rotation][i];
+                        break;
+                    case 6:
+                        resultPosition[i] = activePiece[i] + rotateT[rotation][i];
+                        break;
+                    case 7:
+                        resultPosition[i] = activePiece[i] + rotateZ[rotation][i];
+                        break;
+                }
+            }
+
+            bool rotationSuccess = true;
+
+            // Check if result position if valid
+            for (int i = 0; i < 8; i += 2) {
+                // Check if piece is out of box
+                if (resultPosition[i] < 0 || resultPosition[i] > 9) {
+                    rotationSuccess false;
+                }
+                if (resultPosition[i+1] < 0 || resultPosition[i] > 19) {
+                    rotationSuccess false;
+                }
+
+                // Check if piece will collide with existing piece
+                if (board[resultPosition[i]][resultPosition[i+1]] != 0) {
+                    rotationSuccess false;
+                }
+            }
+
+
+            // Change piece position
+            if (rotationSuccess) {
+              for (int i = 0; i < 8; i++) {
+                  piece[i] = resultPosition[i];
+              }
+            }
+
+        }
+
+}
 
 /*
 DRAW HOME
@@ -74,17 +364,8 @@ void showPlayGame() {
     LCD.Clear();
     LCD.WriteLine("Play Game Here!!!");
 
-    // Board of set pieces
-    int setBoard[10][20];
-
-    // The array represting to position of the activePiece
-    int activePieceLocation[8];
-
-    // Int representing the type of the active piece
-    int activePieceType;
-
-    // Int representing the rotation of the active piece
-    int rotation = 0;
+    // Create boardState
+    BoardState boardState;
 
     // Board representing what gets displayed to the screen
     int displayBoard[10][20];
@@ -95,17 +376,8 @@ void showPlayGame() {
     // Int representing current tick
     int tick = 0;
 
-    // Create the empty board that the game is played on
-    for (int i = 0; i < 10; i ++) {
-        for (int j = 0; j < 20; j++) {
-            setBoard[i][j] = 0;
-            displayBoard[i][j] = 0;
-        }
-    }
-
     // Create inital piece
-    activePieceType = (Random.RandInt() / 4681) + 1;
-    generatePiece(activePieceType, activePieceLocation);
+    boardState.generatePiece();
 
     // Loop for the game
     bool gameCont = true;
@@ -115,30 +387,27 @@ void showPlayGame() {
         tick++;
 
         // Apply gravity to current piece
-        // If true, piece tick ground and piece gets moved onto setBoard and new piece gets created
+        // If true, piece tick ground
         // Rotation gets reset to 0
-        if (applyGravity(activePieceLocation, setBoard, tick, level)) {
+        if (boardState.applyGravity(tick, level)) {
             for (int i = 0; i < 8; i += 2) {
-                setBoard[activePieceLocation[i]][activePieceLocation[i+1]] = activePieceType;
+                setBoard[boardState.activePiece[i]][boardState.activePiece[i+1]] = boardState.activePieceType;
             }
-            activePieceType = (Random.RandInt() / 4681) + 1;
-            generatePiece(activePieceType, activePieceLocation);
-            rotation = 0;
+            boardState.generatePiece();
         }
 
         // Combine activepiece with board to make the display board
         for (int i = 0; i < 10; i ++) {
             for (int j = 0; j < 20; j++) {
-                displayBoard[i][j] = setBoard[i][j];
+                displayBoard[i][j] = boardState.setBoard[i][j];
             }
         }
         for (int i = 0; i < 8; i += 2) {
-            displayBoard[activePieceLocation[i]][activePieceLocation[i+1]] = activePieceType;
+            displayBoard[boardState.activePiece[i]][boardState.activePiece[i+1]] = boardState.activePieceType;
         }
 
         // redraw the board with a back button
         LCD.Clear();
-        drawButton("BACK", 250, 25, 60, 30);
         drawBoard(displayBoard);
 
         // Draw control buttons
@@ -147,26 +416,23 @@ void showPlayGame() {
         drawButton("D", 225, 125, 25, 25);
         drawButton("r", 225, 75, 25, 25);
 
-        // Check left, right, down buttons
+        // Check left, right, down, and rotate buttons
         if (checkTouch(200,225,100,125)) {
-            movePiece(activePieceLocation, 1, setBoard);
+            boardState.movePiece(1);
         }
         else if (checkTouch(250, 275, 100, 125)) {
-            movePiece(activePieceLocation, 2, setBoard);
+            boardState.movePiece(2);
         }
         else if (checkTouch(225, 250, 125, 150)) {
-            moveDown(activePieceLocation, setBoard);
+            boardState.moveDown();
         }
-        // Check rotation button
         else if (checkTouch(225, 250, 75, 100)) {
-            // Is true if piece successfully rotated
-            if (rotatePiece(activePieceLocation, setBoard, activePieceType, rotation)) {
-                // Increament rotation
-                rotation++;
-                rotation %= 4;
-            }
+            boardState.rotatePiece();
         }
 
+
+        // Draw Back button
+        drawButton("BACK", 250, 25, 60, 30);
 
         // Check back button touch
         if (checkTouch(250, 310, 25, 55)) {
@@ -257,6 +523,9 @@ void showCredits() {
     drawHome();
 }
 
+/*
+Main
+*/
 int main()
 {
 
@@ -267,6 +536,7 @@ int main()
     }
     return 0;
 }
+
 
 // Function that returns if a certain area is currently being touched
 bool checkTouch(int x1, int x2, int y1, int y2) {
@@ -287,7 +557,7 @@ void drawButton(char text[], int x, int y, int w, int h) {
 }
 
 // Draw a board of different colored blocks
-void drawBoard(int board[10][20]) {
+void drawBoard(BoardState boardState) {
     // Constant values about board
     int leftBuffer = 50;
     int topBuff = 20;
@@ -300,7 +570,7 @@ void drawBoard(int board[10][20]) {
     // loop through all the values of the
     for (int i = 0; i < 10; i++ ){
         for (int j = 0; j < 20; j++) {
-            int color = board[i][j];
+            int color = boardState.setBoard[i][j];
             if (color != 0) {
                 switch(color) {
                     case 1:
@@ -333,7 +603,7 @@ void drawBoard(int board[10][20]) {
     }
 }
 
-void generatePiece(int type, int n[8]) {
+void generatePieceCoordinates(int type, int n[8]) {
     // Switch depending on the type of tetromino being created
     // modity array n co contain the values of the coordinates of the piece
     switch (type) {
@@ -393,204 +663,5 @@ void generatePiece(int type, int n[8]) {
             n[6] = 5; n[7] = 1;
             break;
     }
-
-}
-
-bool applyGravity(int pieceLocation[8], int setBoard[10][20], int tick, int level) {
-
-    // Check if gravity is applied current tick
-    if (tick % ((10-level) * 5) == 0) {
-        // Check if piece is touching bottom of board
-        for (int i = 1; i < 8; i += 2) {
-            if (pieceLocation[i] == 19) {
-                return true;
-            }
-        }
-        // Check if piece is touching another piece below
-        for (int i = 0; i < 8; i += 2) {
-            if (setBoard[pieceLocation[i]][pieceLocation[i+1]+1] != 0) {
-                return true;
-            }
-        }
-
-        // If piece isn't touching anything below, make piece move down
-        for (int i = 1; i < 8; i += 2) {
-            pieceLocation[i]++;
-        }
-    }
-
-    return false;
-}
-
-void movePiece(int piece[8], int direction, int board[10][20]) {
-    // Variable to determine if there is space to move the piece
-    bool moveable = true;
-
-    // Loop through to check if the piece is loopable
-    for (int i = 0; i < 8; i += 2) {
-        if (direction == 1) {
-            if (piece[i] == 0) {
-                moveable = false;
-            }
-            else if (board[piece[i]-1][piece[i+1]] != 0) {
-                moveable = false;
-            }
-        }
-        else {
-            if (piece[i] == 10) {
-                moveable = false;
-            }
-            else if (board[piece[i]+1][piece[i+1]] != 0) {
-                moveable = false;
-            }
-        }
-    }
-
-    if (moveable) {
-        if (direction == 1) {
-            piece[0] -= 1;
-            piece[2] -= 1;
-            piece[4] -= 1;
-            piece[6] -= 1;
-        }
-        else {
-            piece[0] += 1;
-            piece[2] += 1;
-            piece[4] += 1;
-            piece[6] += 1;
-        }
-    }
-}
-
-void moveDown(int piece[8], int board[10][20]) {
-    bool moveable = true;
-    for (int i = 1; i < 8; i += 2) {
-        if (piece[i] == 19) {
-            moveable = false;
-        }
-        else if (board[piece[i-1]][piece[i]+1] != 0) {
-            moveable = false;
-        }
-    }
-    if (moveable) {
-        for (int i = 1; i < 8; i += 2) {
-            piece[i] += 1;
-        }
-    }
-}
-
-bool rotatePiece(int piece[8], int board[10][20], int type, int rotation) {
-
-    // Int array to represent where the piece should end up
-    int resultPosition[8];
-
-    // 2D array of the movements for all rotations
-
-    // I piece rotation
-    int rotateI[4][8] = {
-        {2, 0, 1, 1, 0, 2, -1, 3},
-        {-2, 0, -1, -1, 0, -2, 1, -3},
-        {2, 0, 1, 1, 0, 2, -1, 3},
-        {-2, 0, -1, -1, 0, -2, 1, -3}
-    };
-
-    // J piece rotation
-    int rotateJ[4][8] = {
-        {2, 1, 1, 0, 0, 1, -1, 2},
-        {0, 1, 1, 0, 0, -1, -1, -2},
-        {-2, 1, -1, 2, 0, 1, 1, 0},
-        {0, -3, -1, -2, 0, -1, 1, 0}
-    };
-
-    // L piece rotation
-    int rotateL[4][8] = {
-        {0, 3, -1, 2, 0, 1, 1, 0},
-        {-2, -1, -1, -2, 0, -1, 1, 0},
-        {0, -1, 1, 0, 0, 1, -1, 2},
-        {2, -1, 1, 0, 0, -1, -1, -2}
-    };
-
-    // O piece rotation
-    int rotateO[4][8] = {
-        {0, 0, 0, 0, 0, 0, 0, 0},
-        {0, 0, 0, 0, 0, 0, 0, 0},
-        {0, 0, 0, 0, 0, 0, 0, 0},
-        {0, 0, 0, 0, 0, 0, 0, 0}
-    };
-
-    // S piece rotation
-    int rotateS[4][8] = {
-        {-1, 0, 0, 1, 1, 0, 2, 1},
-        {1, 0, 0, -1, -1, 0, -2, -1},
-        {-1, 0, 0, 1, 1, 0, 2, 1},
-        {1, 0, 0, -1, -1, 0, -2, -1}
-    };
-
-    // T piece rotation
-    int rotateT[4][8] = {
-        {1, 1, 1, -1, 0, 0, -1, 1},
-        {-1, 1, 1, 1, 0, 0, -1, -1},
-        {-1, -1, -1, 1, 0, 0, 1, -1},
-        {1, -1, -1, -1, 0, 0, 1, 1,}
-    };
-
-    // Z piece rotation
-    int rotateZ[4][8] = {
-        {1, 0, 0, 1, -1, 0, -2, 1},
-        {-1, 0, 0, -1, 1, 0, 2, -1},
-        {1, 0, 0, 1, -1, 0, -2, 1},
-        {-1, 0, 0, -1, 1, 0, 2, -1}
-    };
-
-    // create result array
-    for (int i = 0; i < 8; i++) {
-        // Switch depending on piece type
-        switch (type) {
-            case 1:
-                resultPosition[i] = piece[i] + rotateI[rotation][i];
-                break;
-            case 2:
-                resultPosition[i] = piece[i] + rotateJ[rotation][i];
-                break;
-            case 3:
-                resultPosition[i] = piece[i] + rotateL[rotation][i];
-                break;
-            case 4:
-                resultPosition[i] = piece[i] + rotateO[rotation][i];
-                break;
-            case 5:
-                resultPosition[i] = piece[i] + rotateS[rotation][i];
-                break;
-            case 6:
-                resultPosition[i] = piece[i] + rotateT[rotation][i];
-                break;
-            case 7:
-                resultPosition[i] = piece[i] + rotateZ[rotation][i];
-                break;
-        }
-    }
-
-    // Check if result position if valid
-    for (int i = 0; i < 8; i += 2) {
-        // Check if piece is out of box
-        if (resultPosition[i] < 0 || resultPosition[i] > 9) {
-            return false;
-        }
-        if (resultPosition[i+1] < 0 || resultPosition[i] > 19) {
-            return false;
-        }
-
-        // Check if piece will collide with existing piece
-        if (board[resultPosition[i]][resultPosition[i+1]] != 0) {
-            return false;
-        }
-    }
-
-    // Change piece position
-    for (int i = 0; i < 8; i++) {
-        piece[i] = resultPosition[i];
-    }
-
-    return true;
 
 }
