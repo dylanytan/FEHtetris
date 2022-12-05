@@ -545,7 +545,7 @@ void showPlayGame() {
     // If game over because lost
     if (boardState.gameOver()) {
         // Go to game over page
-        drawGameOver
+        drawGameOver(score);
     }
     // Else, go back to home page since back was tapped
 
@@ -639,7 +639,7 @@ Created by Dylan
 */
 void drawGameOver(int score) {
     LCD.Clear();
-    LCD.SetFontColor(SIENNA)
+    LCD.SetFontColor(SIENNA);
     LCD.WriteLine("GAME OVER");
 
     // Write out score and high score
