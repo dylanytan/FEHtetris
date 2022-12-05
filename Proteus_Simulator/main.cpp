@@ -447,11 +447,14 @@ void showPlayGame() {
     // Board representing what gets displayed to the screen
     int displayBoard[10][20];
 
-    // Int representing current level
+    // Current level
     int level = 1;
 
-    // Int representing current tick
+    // Current tick
     int tick = 0;
+
+    // Current score
+    int score = 0;
 
     // Create inital piece
     boardState.generatePiece();
@@ -474,7 +477,8 @@ void showPlayGame() {
         }
 
         // Check lines cleared
-        boardState.checkLineClear(level);
+        // Add score gained from lines cleared
+        score += boardState.checkLineClear(level);
 
         // Combine activepiece with board to make the display board
         for (int i = 0; i < 10; i ++) {
@@ -498,6 +502,12 @@ void showPlayGame() {
         drawButton("R", 250, 100, 25, 25);
         drawButton("D", 225, 125, 25, 25);
         drawButton("r", 225, 75, 25, 25);
+
+        // Write current score and highScore
+        LCD.WriteAt("Current Score: ", 190, 50,);
+        LCD.WriteAt(score, 260, 50,);
+        LCD.WriteAt("High Score   : ", 190, 65);
+        LCD.WriteAt(highScore, 260, 65);
 
         // Check left, right, down, and rotate buttons
         if (checkTouch(200,225,100,125)) {
