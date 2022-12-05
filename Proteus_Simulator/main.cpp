@@ -325,7 +325,7 @@ class BoardState {
 
                 // loop through all values in that row to see if it is completed
                 for (int i = 0; i < 10; i++) {
-                    if (setBoard[i][row] != 0) {
+                    if (setBoard[i][row] == 0) {
                         rowCleared = false;
                     }
                 }
@@ -348,15 +348,15 @@ class BoardState {
                 }
                 // If line not complete, check line above
                 else {
-                    row++;
+                    row--;
                 }
 
             }
 
             // Return score based off of level and lines cleared
-            //int scoreGained = 10 * (linesCleared * ( 1.0 + (0.5 * linesCleared))) * (1.0 + (0.5 * level));
+            int scoreGained = 10 * (linesCleared * ( 1.0 + (0.5 * linesCleared))) * (1.0 + (0.5 * level));
 
-            return 1;
+            return scoreGained;
 
         }
 
