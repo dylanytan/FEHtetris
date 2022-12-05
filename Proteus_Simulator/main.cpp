@@ -1,6 +1,5 @@
 #include "FEHLCD.h"
 #include "FEHRandom.h"
-#include <stdio.h>
 
 class BoardState;
 
