@@ -309,6 +309,57 @@ class BoardState {
 
         }
 
+        /*
+        Clear completed lines in the board
+        return score earned
+        */
+        int checkLineClear(int level) {
+
+            int linesCleared = 0;
+            bool rowCleared = true;
+
+            // Loop through the rows starting at the bottom
+            int row = 19;
+            while (row >= 0 && linesCleared < 4) {
+                rowCleared = true;
+
+                // loop through all values in that row to see if it is completed
+                for (int i = 0; i < 10; i++) {
+                    if (setBoard[i][row] != 0) {
+                        rowCleared = false;
+                    }
+                }
+
+                // If row is completed
+                if (rowCleared) {
+                    linesCleared++;
+                    // If not top row, move pieces from row above down a level
+                    if (row != 0) {
+                        for (int i = 0; i < 10; i++) {
+                            setBoard[i][row] = setBoard[i][row-1];
+                        }
+                    }
+                    // If it is top row, set row to empty
+                    else {
+                      for (int i = 0; i < 10; i++) {
+                          setBoard[i][row] = 0;
+                      }
+                    }
+                }
+                // If line not complete, check line above
+                else {
+                    row++;
+                }
+
+            }
+
+            // Return score based off of level and lines cleared
+            int scoreGained = 10 * (linesCleared * ( 1.0 + (0.5 * linesCleared))) * (1.0 + (0.5 * level));
+
+            return scoreGained;
+
+        }
+
 };
 
 /*
@@ -398,6 +449,9 @@ void showPlayGame() {
             }
             boardState.generatePiece();
         }
+
+        // Check lines cleared
+        setBoard.checkLineClear();
 
         // Combine activepiece with board to make the display board
         for (int i = 0; i < 10; i ++) {
