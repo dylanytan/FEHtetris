@@ -504,10 +504,10 @@ void showPlayGame() {
         drawButton("r", 225, 75, 25, 25);
 
         // Write current score and highScore
-        LCD.WriteAt("Curr Sc: ", 170, 180);
-        LCD.WriteAt(score, 260, 50);
-        LCD.WriteAt("High Sc: ", 170, 210);
-        LCD.WriteAt(highScore, 260, 65);
+        LCD.WriteAt("Curr Sc: ", 165, 180);
+        LCD.WriteAt(score, 265, 180);
+        LCD.WriteAt("High Sc: ", 165, 210);
+        LCD.WriteAt(highScore, 265, 210);
 
         // Check left, right, down, and rotate buttons
         if (checkTouch(200,225,100,125)) {
