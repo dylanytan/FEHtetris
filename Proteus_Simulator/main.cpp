@@ -15,6 +15,9 @@ bool checkTouch(int, int, int, int);
 void drawButton(char[], int, int, int, int);
 void generatePieceCoordinates(int, int[8]);
 
+// Global variable for high score
+int highScore = 0;
+
 // Class for board state
 // This class represents the board and the current active piece
 class BoardState {
@@ -363,6 +366,23 @@ class BoardState {
 
         }
 
+        /*
+        Checks if game is over
+        returns if game is over
+        */
+
+        bool gameOver() {
+
+            // Loop through top level of setBoard
+            for (int i = 0; i < 10; i++) {
+                if (setBoard[i][0] != 0) {
+                    return true;
+                }
+            }
+
+            return false;
+        }
+
 };
 
 /*
@@ -493,6 +513,10 @@ void showPlayGame() {
             boardState.rotatePiece();
         }
 
+        // Check if game is over
+        if (boardState.gameOver()) {
+            gameCont = false;
+        }
 
         // Check back button touch
         if (checkTouch(250, 310, 25, 55)) {
