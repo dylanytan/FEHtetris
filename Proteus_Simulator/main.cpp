@@ -116,12 +116,14 @@ void showPlayGame() {
 
         // Apply gravity to current piece
         // If true, piece tick ground and piece gets moved onto setBoard and new piece gets created
+        // Rotation gets reset to 0
         if (applyGravity(activePieceLocation, setBoard, tick, level)) {
             for (int i = 0; i < 8; i += 2) {
                 setBoard[activePieceLocation[i]][activePieceLocation[i+1]] = activePieceType;
             }
             activePieceType = (Random.RandInt() / 4681) + 1;
             generatePiece(activePieceType, activePieceLocation);
+            rotation = 0;
         }
 
         // Combine activepiece with board to make the display board
