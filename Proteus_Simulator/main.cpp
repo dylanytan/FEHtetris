@@ -542,6 +542,13 @@ void showPlayGame() {
         LCD.Update();
     }
 
+    // If game over because lost
+    if (boardState.gameOver()) {
+        // Go to game over page
+        drawGameOver
+    }
+    // Else, go back to home page since back was tapped
+
     drawHome();
     while (true) {
         LCD.Update();
@@ -630,7 +637,7 @@ void showCredits() {
 Game Over page
 Created by Dylan
 */
-void gameOver(int score) {
+void drawGameOver(int score) {
     LCD.Clear();
     LCD.SetFontColor(SIENNA)
     LCD.WriteLine("GAME OVER");
@@ -663,6 +670,11 @@ void gameOver(int score) {
             play = true;
             break;
         }
+    }
+
+    // Update high score
+    if (score > highScore) {
+        highScore = score;
     }
 
     // Play game
