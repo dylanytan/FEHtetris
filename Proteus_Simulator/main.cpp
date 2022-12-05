@@ -20,6 +20,7 @@ int highScore = 0;
 
 // Class for board state
 // This class represents the board and the current active piece
+// Created by Dylan
 class BoardState {
     public:
         // The board with all the set pieces
@@ -387,6 +388,7 @@ class BoardState {
 
 /*
 DRAW HOME
+Created by Dylan
 */
 void drawHome() {
     LCD.Clear();
@@ -399,6 +401,7 @@ void drawHome() {
     drawButton("Instruc", 25, 150, 100, 30);
     drawButton("Credits",20,200,100,30);
 
+    // Check for user touch for all buttons
     int userSelection = 0;
     while (userSelection == 0) {
         LCD.Update();
@@ -416,6 +419,8 @@ void drawHome() {
             userSelection = 4;
         }
     }
+
+    // Depending on user selection, go to different pages
     LCD.Clear();
     switch(userSelection) {
         case 1:
@@ -436,6 +441,7 @@ void drawHome() {
 
 /*
 PLAY GAME
+Created by Dylan
 */
 void showPlayGame() {
     LCD.Clear();
@@ -542,15 +548,12 @@ void showPlayGame() {
     }
 }
 
+// Show stats page
+// Created by Rishi
 void showStats() {
     LCD.Clear();
     LCD.WriteLine("HIGH SCORES:");
-    LCD.WriteLine(" ");
-    LCD.WriteLine("1.   Ava: 5000");
-    LCD.WriteLine("2.   Bob: 4000");
-    LCD.WriteLine("3.   Carl: 3000");
-    LCD.WriteLine("4.   Daisy: 2000");
-    LCD.WriteLine("5.   Ellen: 1000");
+    LCD.WriteLine(highScore);
 
     // Back Button
     drawButton("BACK",250,25,60,30);
@@ -567,6 +570,8 @@ void showStats() {
     drawHome();
 }
 
+//Load showInstuctions showPlayGame
+// Created by Rishi
 void showInstruc() {
     LCD.Clear();
     LCD.WriteLine("INSTRUCTIONS:");
@@ -596,6 +601,10 @@ void showInstruc() {
     drawHome();
 }
 
+/*
+Load show credits page
+Created by Dylan
+*/
 void showCredits() {
     LCD.Clear();
     LCD.WriteLine("Made by Rishi and Dylan");
@@ -618,6 +627,59 @@ void showCredits() {
 }
 
 /*
+Game Over page
+Created by Dylan
+*/
+void gameOver(int score) {
+    LCD.Clear();
+    LCD.SetFontColor(SIENNA)
+    LCD.WriteLine("GAME OVER");
+
+    // Write out score and high score
+    LCD.WriteLine("Score: ");
+    LCD.WriteLine(score);
+
+    // Write out previous high score
+    LCD.WriteLine(" ");
+    LCD.WriteLine("Previous High Score: ");
+    LCD.WriteLine(highScore);
+
+    // Create buttons for home and play again
+    drawButton("Home", 50, 150, 80, 40);
+    drawButton("Play", 150, 150, 80, 40);
+
+    // Wait until either button pressed
+    bool found = false;
+    bool play = false;
+    while (!found) {
+        LCD.Update();
+        // If home pressed
+        if (checkTouch(50,130,150,190)) {
+            found = true;
+            break;
+        }
+        // If play pressed
+        if (checkTouch(150, 230, 150, 190)) {
+            play = true;
+            break;
+        }
+    }
+
+    // Play game
+    if (play) {
+        showPlayGame();
+    }
+    // Go back to home
+    else {
+        drawHome();
+    }
+
+    LCD.Update();
+
+}
+
+
+/*
 Main
 */
 int main()
@@ -633,6 +695,7 @@ int main()
 
 
 // Function that returns if a certain area is currently being touched
+// Created by Rishi
 bool checkTouch(int x1, int x2, int y1, int y2) {
     float touchX, touchY;
     if (LCD.Touch(&touchX, &touchY)) {
@@ -645,12 +708,14 @@ bool checkTouch(int x1, int x2, int y1, int y2) {
 }
 
 // Function to draw button with certain size at given location
+// created by Rishi
 void drawButton(char text[], int x, int y, int w, int h) {
     LCD.DrawRectangle(x, y ,w, h);
     LCD.WriteAt(text, x + 5, y + 5);
 }
 
 // Draw a board of different colored blocks
+// Created by Rishi
 void drawBoard(int board[10][20]) {
     // Constant values about board
     int leftBuffer = 50;
@@ -697,6 +762,10 @@ void drawBoard(int board[10][20]) {
     }
 }
 
+/*
+Creates coordinates for a piece depending on type
+Created by Dylan
+*/
 void generatePieceCoordinates(int type, int n[8]) {
     // Switch depending on the type of tetromino being created
     // modity array n co contain the values of the coordinates of the piece
