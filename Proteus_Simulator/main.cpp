@@ -13,6 +13,7 @@ void generatePiece(int, int[8]);
 bool applyGravity(int[8], int[10][20], int, int);
 void movePiece(int[8], int, int[10][20]);
 void moveDown(int[8], int[10][20]);
+bool rotatePiece(int[8], int[10][20], int, int);
 
 bool checkTouch(int, int, int, int);
 void drawButton(char[], int, int, int, int);
@@ -81,6 +82,9 @@ void showPlayGame() {
 
     // Int representing the type of the active piece
     int activePieceType;
+
+    // Int representing the rotation of the active piece
+    int rotation = 0;
 
     // Board representing what gets displayed to the screen
     int displayBoard[10][20];
@@ -464,3 +468,19 @@ void moveDown(int piece[8], int board[10][20]) {
         }
     }
 }
+
+bool rotatePiece(int piece[8], int board[10][20], int type, int rotation) {
+
+    int x1, y1, x2, y2, x3, y3, x4, y4;
+
+    switch (type) {
+        case 1:
+            switch (rotation) {
+                case 1:
+                    x1 = piec[0] 
+            }
+    }
+
+
+}
+
